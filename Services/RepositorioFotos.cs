@@ -46,4 +46,11 @@ public class RepositorioFotos
 
     /// <summary>Indica si el archivo de imagen existe fisicamente en wwwroot/fotos.</summary>
     public bool ExisteArchivo(string nombre) => File.Exists(Path.Combine(_carpetaFotos, nombre));
+
+    /// <summary>Copia el archivo subido a wwwroot/fotos con el nombre indicado.</summary>
+    public async Task GuardarArchivo(string nombre, IFormFile archivo)
+    {
+        using var destino = File.Create(Path.Combine(_carpetaFotos, nombre));
+        await archivo.CopyToAsync(destino);
+    }
 }

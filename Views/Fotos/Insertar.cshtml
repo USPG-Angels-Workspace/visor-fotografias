@@ -3,9 +3,10 @@
 }
 <div class="tarjeta">
     <h2>Insertar fotografía</h2>
-    <p>Escribe el nombre del archivo (debe estar en <code>wwwroot/fotos</code>).</p>
-    <form method="post">
-        <p><input type="text" name="nombre" placeholder="ej. playa.svg" required /></p>
+    <p>Sube una imagen, o escribe el nombre de una que ya esté en <code>wwwroot/fotos</code>.</p>
+    <form method="post" enctype="multipart/form-data">
+        <p><input type="file" name="archivo" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/*" /></p>
+        <p>o nombre existente: <input type="text" name="nombre" placeholder="ej. playa.svg" /></p>
         <p>
             <label><input type="radio" name="posicion" value="inicio" /> Al inicio</label>
             <label><input type="radio" name="posicion" value="final" checked /> Al final</label>

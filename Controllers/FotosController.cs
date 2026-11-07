@@ -40,21 +40,32 @@ public class FotosController : Controller
     [HttpGet]
     public IActionResult Insertar() => View();
 
+    private static readonly string[] ExtensionesPermitidas = { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg" };
+
+    // Recibe el archivo subido (opcional). Si no se sube archivo, se usa el nombre escrito
+    // y se asume que la imagen ya esta en wwwroot/fotos.
     [HttpPost]
-    public IActionResult Insertar(string nombre, string posicion)
+    public async Task<IActionResult> Insertar(string? nombre, string posicion, IFormFile? archivo)
     {
+        if (archivo != null && archivo.Length > 0)
+            nombre = Path.GetFileName(archivo.FileName); // GetFileName evita rutas maliciosas (../)
+
         nombre = (nombre ?? "").Trim();
-        if (nombre.Length == 0) { Aviso("Escribe el nombre del archivo.", true); return View(); }
+        if (nombre.Length == 0) { Aviso("Sube una imagen o escribe el nombre del archivo.", true); return View(); }
+        if (!ExtensionesPermitidas.Contains(Path.GetExtension(nombre).ToLowerInvariant()))
+        { Aviso("Formato no permitido. Usa jpg, png, gif, webp o svg.", true); return View(); }
         if (_repo.Lista.Buscar(nombre) != null) { Aviso("Esa fotografía ya está en la lista.", true); return View(); }
-        if (!_repo.ExisteArchivo(nombre))
-            Aviso($"Se insertó, pero '{nombre}' no existe aún en wwwroot/fotos.", true);
-        else
-            Aviso("Fotografía insertada.");
+
+        if (archivo != null && archivo.Length > 0)
+            await _repo.GuardarArchivo(nombre, archivo);
+        else if (!_repo.ExisteArchivo(nombre))
+        { Aviso($"'{nombre}' no existe en wwwroot/fotos. Súbela con el selector de archivo.", true); return View(); }
 
         var foto = new Foto(RepositorioFotos.RutaFotos, nombre);
         if (posicion == "inicio") _repo.Lista.InsertarInicio(foto);
         else _repo.Lista.InsertarFinal(foto);
         _repo.Guardar();
+        Aviso("Fotografía insertada.");
         return RedirectToAction(nameof(Index));
     }
 
