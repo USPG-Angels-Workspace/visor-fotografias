@@ -1,0 +1,5 @@
+playa.svg
+montana.svg
+ciudad.svg
+bosque.svg
+atardecer.svg
