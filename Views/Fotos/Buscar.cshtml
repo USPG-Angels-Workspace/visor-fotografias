@@ -1,0 +1,25 @@
+@model Foto?
+@{
+    ViewData["Title"] = "Buscar";
+    string? nombre = ViewBag.Nombre;
+}
+<div class="tarjeta">
+    <h2>Buscar fotografía</h2>
+    <form method="get">
+        <input type="text" name="nombre" value="@nombre" placeholder="Nombre del archivo" />
+        <button class="btn" type="submit">Buscar</button>
+    </form>
+    @if (!string.IsNullOrWhiteSpace(nombre))
+    {
+        if (Model == null)
+        {
+            <p>No se encontró «@nombre».</p>
+        }
+        else
+        {
+            <p>Encontrada: <strong>@Model.Nombre</strong> (@Model.Ruta)</p>
+            <img src="@Model.Url" alt="@Model.Nombre" height="160" />
+            <p><a class="btn" asp-action="Visor" asp-route-nombre="@Model.Nombre">Abrir en el visor</a></p>
+        }
+    }
+</div>

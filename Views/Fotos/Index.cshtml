@@ -1,0 +1,45 @@
+@model List<Foto>
+@{
+    ViewData["Title"] = "Lista";
+    bool atras = ViewBag.Atras;
+}
+<div class="tarjeta">
+    <h2>Fotografías (@Model.Count)</h2>
+    <p>
+        Recorrido:
+        <a class="btn @(atras ? "sec" : "")" asp-action="Index">Inicio → Final (Next)</a>
+        <a class="btn @(atras ? "" : "sec")" asp-action="Index" asp-route-orden="atras">Final → Inicio (Prev)</a>
+    </p>
+    @if (Model.Count == 0)
+    {
+        <p>La lista está vacía.</p>
+    }
+    else
+    {
+        <table>
+            <tr><th>#</th><th>Vista</th><th>Nombre</th><th>Dirección</th><th></th></tr>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var f = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td><img src="@f.Url" alt="@f.Nombre" height="40" /></td>
+                    <td>@f.Nombre</td>
+                    <td>@f.Ruta</td>
+                    <td>
+                        <a class="btn" asp-action="Visor" asp-route-nombre="@f.Nombre">Ver</a>
+                        <a class="btn sec" asp-action="Modificar" asp-route-nombre="@f.Nombre">Modificar</a>
+                        <form class="inline" method="post" asp-action="Eliminar">
+                            <input type="hidden" name="nombre" value="@f.Nombre" />
+                            <button class="btn rojo" type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+        <p>
+            <form class="inline" method="post" asp-action="Eliminar"><input type="hidden" name="posicion" value="inicio" /><button class="btn rojo">Eliminar primero</button></form>
+            <form class="inline" method="post" asp-action="Eliminar"><input type="hidden" name="posicion" value="final" /><button class="btn rojo">Eliminar último</button></form>
+        </p>
+    }
+</div>

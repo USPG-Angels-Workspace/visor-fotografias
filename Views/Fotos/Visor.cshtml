@@ -1,0 +1,22 @@
+@model Nodo?
+@{
+    ViewData["Title"] = "Visor";
+}
+<div class="tarjeta visor">
+    @if (Model == null)
+    {
+        <p>No hay fotografías en la lista.</p>
+    }
+    else
+    {
+        <h2>@Model.Dato.Nombre</h2>
+        <img src="@Model.Dato.Url" alt="@Model.Dato.Nombre" />
+        <div class="acciones">
+            <a class="btn" aria-disabled="@(Model.Prev == null ? "true" : "false")"
+               asp-action="Visor" asp-route-nombre="@Model.Prev?.Dato.Nombre">← Anterior</a>
+            <span>@(Model.Prev == null ? "Primera foto" : Model.Next == null ? "Última foto" : "")</span>
+            <a class="btn" aria-disabled="@(Model.Next == null ? "true" : "false")"
+               asp-action="Visor" asp-route-nombre="@Model.Next?.Dato.Nombre">Siguiente →</a>
+        </div>
+    }
+</div>

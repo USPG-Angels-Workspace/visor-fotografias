@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Insertar";
+}
+<div class="tarjeta">
+    <h2>Insertar fotografía</h2>
+    <p>Escribe el nombre del archivo (debe estar en <code>wwwroot/fotos</code>).</p>
+    <form method="post">
+        <p><input type="text" name="nombre" placeholder="ej. playa.svg" required /></p>
+        <p>
+            <label><input type="radio" name="posicion" value="inicio" /> Al inicio</label>
+            <label><input type="radio" name="posicion" value="final" checked /> Al final</label>
+        </p>
+        <button class="btn" type="submit">Insertar</button>
+    </form>
+</div>

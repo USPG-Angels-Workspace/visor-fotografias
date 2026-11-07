@@ -1,0 +1,14 @@
+@model Foto
+@{
+    ViewData["Title"] = "Modificar";
+}
+<div class="tarjeta">
+    <h2>Modificar fotografía</h2>
+    <form method="post">
+        <input type="hidden" name="nombre" value="@Model.Nombre" />
+        <p>Nombre actual: <strong>@Model.Nombre</strong></p>
+        <p><input type="text" name="nuevoNombre" value="@Model.Nombre" required /></p>
+        <button class="btn" type="submit">Guardar</button>
+        <a class="btn sec" asp-action="Index">Cancelar</a>
+    </form>
+</div>
